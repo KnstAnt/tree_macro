@@ -1,17 +1,25 @@
 use std::env;
 extern crate proc_macro;
-use tree_macro::var_name;
-
 
 macro_rules! nested {
     //
     // input is empty: time to output
     (@munch () -> {$(#[$attr:meta])* $name:ident $(($ty:ty))*}) => {
         $(#[$attr])*
+  //      #[derive(NewMacro)]    
         struct $name {
             path: String,
             $(child: $ty,),*
             // $($id: $ty,),*
+        }
+        impl $name {
+            pub fn new(parent: String) -> Self {
+                let path = parent.clone() + "/" + stringify!($name);
+                Self {
+                    path: path.clone(),
+                    $(child: <$ty>::new(path.clone()),),* 
+                }
+            }
         }
     };
     //    
@@ -46,6 +54,7 @@ nested!{
         }
     }
 }
+
 //
 fn main() {
     env::set_var("RUST_LOG", "debug");
@@ -58,16 +67,9 @@ fn main() {
 
     // let tree = Parent::from(Child {});
     // Child, };
-    let tree = Parent {
-        path: "/parent".to_owned(),
-        child: Child {
-            path: "/child".to_owned(),
-        }
-    };
+
+    let tree = Parent::new("".to_string());
     println!("tree: {:#?}", tree);
     println!("tree.path: {:#?}", tree.path);
     println!("tree.child.path: {:#?}", tree.child.path);
-
-    let my_variable = 42;
-    var_name!(my_variable);
 }
