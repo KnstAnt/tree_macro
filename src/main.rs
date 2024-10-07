@@ -13,8 +13,17 @@ macro_rules! nested {
             // $($id: $ty,),*
         }
         impl $name {
-            pub fn new(parent: String) -> Self {
-                let path = parent.clone() + "/" + stringify!($name);
+            pub fn new(parent: impl Into<String>) -> Self {
+                let path = format!("{}/{}", parent.into(), stringify!($name));
+                let path = path.chars().map(|s| {
+                    if s.is_uppercase() {
+                        format!("_{}", s.to_lowercase())
+                    } else {
+                        s.to_string()
+                    }
+                })               
+                .collect::<String>()
+                .replace("/_", "/");                
                 Self {
                     path: path.clone(),
                     $(child: <$ty>::new(path.clone()),),* 
