@@ -9,7 +9,7 @@ fn main() {
     env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    let tree = Parent::new("".to_string());
+    let tree = Parent::new("");
     println!("tree: {:#?}", tree);
     println!("tree.path: {:#?}", tree.path());
     println!("tree.child.path: {:#?}", tree.child.path());
