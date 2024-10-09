@@ -1,20 +1,39 @@
+#![feature(trace_macros)]   
 pub mod nested;
 pub mod data_tree;
 use std::env;
 use data_tree::*;
+use tree_macro::add_field;
 //
+
+/*
+#[add_field]
+#[derive (Debug)]
+struct Ship { 
+    a: String,
+}
+*/
+
 
 fn main() {
     env::set_var("RUST_LOG", "debug");
     env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
-    let tree = Foo::new("");
+
+ //   let tree = Foo{ bar: Bar{}, a: "a".to_string() };
+   let tree = Foo{ bar: Bar{} };
+    println!("tree: {:#?}", tree);
+
+ //   let ship = Ship{ a: "a".to_string() };
+ //   println!("ship: {:#?}", ship);
+
+ /*   let tree = Foo::new("");
     println!("tree: {:#?}", tree);
     println!("tree.path: {:#?}", tree.path());
     println!("tree.bar.path: {:#?}", tree.bar.path());
     println!("tree.bar.foobar.path: {:#?}", tree.bar.foobar.path());
-
+*/
   /*  println!("{:#?}", 
         Foo {  
             path: "/Foo".to_owned(), 

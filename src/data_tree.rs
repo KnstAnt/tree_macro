@@ -1,5 +1,33 @@
+use tree_macro::add_field;
+
 use crate::nested;
 
+
+#[derive(Debug)]
+pub struct Bar {
+}
+
+trace_macros!(true);
+//nested!{
+    #[add_field]   
+    #[derive(Debug)] 
+        pub struct Foo {
+            pub bar: Bar,
+        }
+//}
+trace_macros!(false);
+
+/*
+nested!{
+    #[derive(Debug)]
+    Foo {
+        bar: Bar {
+            foobar: Foobar {
+            }
+        }
+    }
+}
+*/
 /*
 nested!{
     #[derive(Debug)]
@@ -11,7 +39,7 @@ nested!{
     }
 }
 */
-
+/*
 nested!{
     #[derive(Debug)]
     Foo {
@@ -21,7 +49,7 @@ nested!{
         }
     }
 }
-
+*/
 /*
 nested!{
     #[derive(Debug)]
